@@ -1,0 +1,10 @@
+# Ignore heavy dataset files
+*.pkl
+*.npy
+
+# Ignore cache and temp files 
+__pycache__/
+*.pyc
+.DS_Store
+.venv/
+
