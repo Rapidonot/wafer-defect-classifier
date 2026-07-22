@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 from PIL import Image
 import pandas as pd
@@ -15,7 +16,10 @@ This tool uses a **ResNet-18** model to identify multiple simultaneous defect pa
 
 # sidebar ( where you can adjust the detection threshold ) 
 st.sidebar.header("Model Configuration")
-weights_path = "resnet18_bce.pth" 
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+weights_path = os.path.join(BASE_DIR, "resnet18_bce.pth")
+
 threshold = st.sidebar.slider("Detection Threshold", 0.0, 1.0, 0.5)
 
 
