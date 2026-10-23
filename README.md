@@ -28,8 +28,6 @@ Each class gets its own sigmoid output instead of one softmax over all classes.
 
 ![One example wafer bin map for each of the 8 defect classes](assets/sample_wafers.png)
 
-*One test-set wafer for each defect class. Yellow dies failed the electrical test.*
-
 ### Data
 - **Sources:** two public datasets, **WM-811K** (single-pattern labels) and **MixedWM38** (multi-pattern labels),
   combined into **78,534 wafers**.
@@ -139,7 +137,7 @@ The final part was to run the distilled model on an actual microcontroller and c
 
 [![The ESP32-S3 classifying test wafers live](assets/esp32_demo.gif)](assets/esp32_demo.mp4)
 
-*The ESP32-S3 (bottom left) classifying test wafers. Its LED glows blue while it computes and green when the prediction is correct. Click for the full 48-second video (no sound).*
+ESP's LED glows blue while it computes and green when the prediction is correct. Click for the full 48-second video.
 
 ### Results (all 11,781 test wafers, tested on the board)
 
