@@ -1,0 +1,11 @@
+# Parts 1-3 (the web demo has its own list in dashboard/requirements.txt)
+numpy
+pandas
+pillow
+torch
+torchvision
+scikit-learn
+matplotlib
+seaborn
+tqdm
+pyserial

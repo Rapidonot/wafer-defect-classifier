@@ -160,3 +160,46 @@ model fits easily, with room to spare.
   score is noisy).
 - Reducing the input to 56x56 makes very thin scratches harder to see.
 - 251 ms per wafer uses plain C on one core, and no optimisation was implemented. 
+
+## Repository layout
+```
+1_baseline/      Part 1: data split, ResNet-18 / Vanilla CNN training, evaluation
+2_distillation/  Part 2: student model, distillation, 8-bit training, integer reference, export to C
+                 results/: the final 8-bit model (student_int8.npz) and its results summary
+3_esp32/         Part 3: Arduino sketch, Mac script that checks the board, measured results
+dashboard/       Streamlit web demo (ResNet-18)
+assets/          images and the demo video used in this README
+sample_WBMs/     example wafer bin maps for the demo
+data/            (not in the repo) datasets and anything generated from them
+```
+
+## Reproduce
+
+Install the Python packages: `pip install -r requirements.txt`.
+
+**Part 1: data and baseline.** Download `LSWMD.pkl` (WM-811K) and `MixedWM38.npz` into a new `data/` folder at the
+repository root, then:
+```bash
+cd data
+python ../1_baseline/split_data.py                              # writes dataset_70_TRAIN / 15_VAL / 15_TEST.npz
+python ../1_baseline/modeltraining.py --model resnet18 --loss bce
+python ../1_baseline/modeltraining.py --model vanilla_cnn --loss bce
+cp ../dashboard/resnet18_bce.pth research_resnet18_bce.pth      # the trained ResNet-18 used for the results
+python ../1_baseline/benchmarking.py                            # test-set report and confusion matrices
+```
+
+**Part 2: distillation.** Uses the ResNet-18 in `dashboard/resnet18_bce.pth` as the teacher. 
+```bash
+cd 2_distillation
+python run_all.py          # teacher outputs -> 3 training runs of the student -> 8-bit -> results/summary.md
+python export_c.py         # results/student_int8.npz -> 3_esp32/wafer_esp32/model_data.h
+```
+
+**Part 3: ESP32-S3.** With [arduino-cli](https://arduino.github.io/arduino-cli/) using the `esp32` core:
+```bash
+arduino-cli compile --fqbn esp32:esp32:esp32s3:CDCOnBoot=cdc,FlashSize=8M 3_esp32/wafer_esp32
+arduino-cli upload -p <your port> --fqbn esp32:esp32:esp32s3:CDCOnBoot=cdc,FlashSize=8M 3_esp32/wafer_esp32
+python 3_esp32/esp32_host.py demo --idx 2119     # one wafer
+python 3_esp32/esp32_host.py evaluate            # all 11,781 test wafers, bit-exact check + F1
+```
+more details:  [3_esp32/README.md](3_esp32/README.md).
