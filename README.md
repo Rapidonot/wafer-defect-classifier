@@ -54,8 +54,8 @@ Each class gets its own sigmoid output instead of one softmax over all classes.
 
 ### Results  (Test set, 11,781 wafers)
 
-| Model | Macro F1 | Micro F1 | Parameters 
-|---|---:|---:|---:|---:|
+| Model | Macro F1 | Micro F1 | Parameters |
+|---|---:|---:|---:|
 | **ResNet-18** | **0.966** | **0.980** | 11.2 M | 
 | Vanilla CNN | 0.857 | 0.908 | 3.2 M | 
 
