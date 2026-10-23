@@ -10,6 +10,8 @@ classifier (macro F1 0.966). I then distilled it into a 30 KB integer-only netwo
 | Size | 44.7 MB | 30.6 KB | 30.6 KB |
 | Runs on | GPU / laptop | anything | a microcontroller, 251 ms per wafer |
 
+![Pipeline: dataset, ResNet-18 teacher, distilled 8-bit model, ESP32-S3](assets/pipeline.png)
+
 ---
 
 ## Part 1: Classifying wafer defects with ResNet-18
@@ -24,7 +26,9 @@ The model recognises **8 defect patterns**: Center, Donut, Edge-Loc, Edge-Ring, 
 A wafer can have **several defects at once**, so this is a **multi-label** problem, and the model can recognise then. 
 Each class gets its own sigmoid output instead of one softmax over all classes.
 
-<!-- TODO: show a few maps from sample_WBMs/ with their labels -->
+![One example wafer bin map for each of the 8 defect classes](assets/sample_wafers.png)
+
+*One test-set wafer for each defect class. Yellow dies failed the electrical test.*
 
 ### Data
 - **Sources:** two public datasets, **WM-811K** (single-pattern labels) and **MixedWM38** (multi-pattern labels),
@@ -132,6 +136,10 @@ The final part was to run the distilled model on an actual microcontroller and c
 - **Code:** the integer model written as about 80 lines of plain C 
 - **Link:** a Mac script sends test wafers over USB and compares every one of the board's 8 outputs with the
   Python reference.
+
+[![The ESP32-S3 classifying test wafers live](assets/esp32_demo.gif)](assets/esp32_demo.mp4)
+
+*The ESP32-S3 (bottom left) classifying test wafers. Its LED glows blue while it computes and green when the prediction is correct. Click for the full 48-second video (no sound).*
 
 ### Results (all 11,781 test wafers, tested on the board)
 
