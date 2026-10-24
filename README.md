@@ -23,7 +23,7 @@ a cluster at the centre. Each pattern is a result of a different equipment or pr
 maps by eye is not feasible in a modern fab, so the task is to classify them automatically.
 
 The model recognises **8 defect patterns**: Center, Donut, Edge-Loc, Edge-Ring, Loc, Near-full, Random and Scratch.
-A wafer can have **several defects at once**, so this is a **multi-label** problem, and the model can recognise then. 
+A wafer can have **several defects at once**, so this is a **multi-label** problem, and the model can recognise them. 
 Each class gets its own sigmoid output instead of one softmax over all classes.
 
 ![One example wafer bin map for each of the 8 defect classes](assets/sample_wafers.png)
@@ -89,7 +89,7 @@ microcontroller that keeps as much of ResNet-18's accuracy as possible.
 ### Process
 - **Knowledge distillation:** a small 'student' network learns from the true labels and from the ResNet-18
   teacher's predictions. The teacher's soft outputs carry information the hard labels do not, such as "this
-  wafer looks a bit like a scratch". The teacher's predictions are cached for all 8 flips and rotations of every
+  wafer looks a bit like a scratch". The teacher's predictions are computed for all 8 flips and rotations of every
   training wafer. The student trains on all of them.
 - **Input optimised for the hardware:** a wafer map only has three values (off-wafer, pass, fail). The 224x224 map is
   reduced to two 56x56 planes that count how many dies are on the wafer and how many failed.
