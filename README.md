@@ -203,3 +203,11 @@ python 3_esp32/esp32_host.py demo --idx 2119     # one wafer
 python 3_esp32/esp32_host.py evaluate            # all 11,781 test wafers, bit-exact check + F1
 ```
 more details:  [3_esp32/README.md](3_esp32/README.md).
+
+
+## Acknowledgements
+
+- Claude was used for parts of the distillation and ESP32 code. All decisions are mine. 
+- **WM-811K** dataset: Wu, Jang & Chen, [*Wafer map failure pattern recognition and similarity ranking for large-scale data sets*](https://doi.org/10.1109/TSM.2014.2364237), IEEE TSM, 2015.
+- **MixedWM38** dataset: Wang et al., [*Deformable convolutional networks for efficient mixed-type wafer defect pattern recognition*](https://doi.org/10.1109/TSM.2020.3020985), IEEE TSM, 2020.
+- The ResNet-18 uses the ImageNet-pretrained weights in torchvision.
